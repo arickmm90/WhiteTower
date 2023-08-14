@@ -9,10 +9,7 @@ import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.testng.asserts.Assertion;
 import org.openqa.selenium.support.ui.Select;
 
@@ -27,8 +24,8 @@ public class MyTestingClass {
     String actualResult="";
 
 
-    @BeforeTest
-    public void launchBrowser(){
+    @BeforeMethod
+    public void launchBrowser() throws InterruptedException{
         System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"\\drivers\\chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -40,6 +37,22 @@ public class MyTestingClass {
         actualResult=driver.getTitle();
         Assert.assertEquals(expectedResult, actualResult,"Titulo diferente");
         System.out.println("Encontre AngularJS " + driver.getTitle());
+
+        //Para llenar la lista
+        WebElement todoList = driver.findElement(By.xpath("/html/body/ng-view/section/header/form/input"));
+        Actions builder = new Actions(driver);
+        Action seriesActions = builder.moveToElement(todoList)
+                .click()
+                .sendKeys("ToDo 1")
+                .sendKeys(Keys.ENTER)
+                .sendKeys("ToDo 2")
+                .sendKeys(Keys.ENTER)
+                .sendKeys("ToDo 3")
+                .sendKeys(Keys.ENTER)
+                .build();
+        seriesActions.perform();
+        Thread.sleep(3000);
+        System.out.println("Se han agregado los 3 ToDos exitosamente");
     }
 
     /*@BeforeMethod
@@ -51,9 +64,15 @@ public class MyTestingClass {
         System.out.println("Encontre AngularJS " + driver.getTitle());
     }*/
 
+    @AfterMethod
+    public void Quit(){
+        System.out.println("Vamos a cerrar el navegador");
+        driver.quit();
+    }
+
     @Test
-    public void testcase1() throws InterruptedException {
-        WebElement todoList = driver.findElement(By.xpath("/html/body/ng-view/section/header/form/input"));
+    public void testcase1()  {
+        /*WebElement todoList = driver.findElement(By.xpath("/html/body/ng-view/section/header/form/input"));
 
         Actions builder = new Actions(driver);
         Action seriesActions = builder.moveToElement(todoList)
@@ -66,8 +85,8 @@ public class MyTestingClass {
                 .sendKeys(Keys.ENTER)
                 .build();
         seriesActions.perform();
-        Thread.sleep(6000);
-        System.out.println("Se han agregado los 3 ToDos exitosamente");
+        Thread.sleep(3000);
+        System.out.println("Se han agregado los 3 ToDos exitosamente");*/
 
         String thirdposition= driver.findElement(By.xpath("/html/body/ng-view/section/section/ul/li[3]/div/label")).getText();
         Assert.assertEquals(thirdposition, "ToDo 3", "ToDo 3 is not in third position");
@@ -99,6 +118,7 @@ public class MyTestingClass {
 
 
         WebElement secondPosition = driver.findElement(By.xpath("/html/body/ng-view/section/section/ul/li[2]/div/label"));
+
         Actions builder = new Actions(driver);
         Action seriesAction = builder.moveToElement(secondPosition)
                         .doubleClick()
@@ -151,8 +171,4 @@ public class MyTestingClass {
 
     }
 
-    @AfterTest
-    public void Quit(){
-        driver.quit();
-    }
 }
