@@ -141,7 +141,12 @@ public class MyTestingClass {
         driver.findElement(By.xpath("/html/body/ng-view/section/footer/ul/li[2]/a")).click();
         Thread.sleep(3000);
 
-
+        //Vamos a imprimir por consola lo que hay en cada posicion
+        System.out.println("Estos son los elementos en cada posision");
+        for (int i=1; i<3; i++){
+            String element = driver.findElement(By.xpath("/html/body/ng-view/section/section/ul/li["+ i + "]/div/label")).getText();
+            System.out.println( i + " - " + element);
+        }
         System.out.println("Termino el test 3");
 
     }
