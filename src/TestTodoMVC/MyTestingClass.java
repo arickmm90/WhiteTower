@@ -125,7 +125,5 @@ public class MyTestingClass {
             String element = driver.findElement(By.xpath("/html/body/ng-view/section/section/ul/li["+ i + "]/div/label")).getText();
             System.out.println( i + " - " + element);
         }
-
     }
-
 }
